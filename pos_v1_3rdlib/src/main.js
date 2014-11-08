@@ -4,19 +4,12 @@ function printInventory(inputs) {
     for(var i=0;i<inputs.length;i++){
         inputs[i]+='-1';
         var arr=inputs[i].split('-',2);
-        for(var h=0;h<loadAllItems().length;h++){
-            if(loadAllItems()[h].barcode==arr[0]){
-                break
-            }
-        }
+        var h=_.findLastIndex(loadAllItems(), {
+            'barcode': arr[0]
+        });
         zongji+=(loadAllItems()[h]).price*arr[1];
         var count=1,c=0;
-        for(var k=0;k<i;k++){
-            if(inputs[i]==inputs[k]){
-                c=1
-            }
-        }
-        if(c==1){continue}
+        if((_.first(inputs,i)).indexOf(inputs[i])!=-1){continue}
         for(var j=i+1;j<inputs.length;j++){
             if(arr[0]==inputs[j]){
                 count+=1
