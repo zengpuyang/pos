@@ -1,40 +1,22 @@
 //TODO: Please write code in this file.
 function printInventory(inputs) {
-    var zongji=0,shuchu='',free='',jiesheng= 0;
+    var paid=0,print='',free='',save= 0;
     for(var i=0;i<inputs.length;i++){
         inputs[i]+='-1';
-        var arr=inputs[i].split('-',2),count=1,c=0;
-        var h=_.findLastIndex(loadAllItems(), {
+        var arr=inputs[i].split('-',2),c=0;
+        var n=_.findLastIndex(loadAllItems(), {
             'barcode': arr[0]
-        });
-        zongji+=(loadAllItems()[h]).price*arr[1];
-        if((_.first(inputs,i)).indexOf(inputs[i])!=-1){continue}
-        for(var j=i+1;j<inputs.length;j++){
-            if(arr[0]==inputs[j]){
-                count+=1
-            }
-        }
-        count+=arr[1]-1;
+        });                                                        //寻找购物车商品的的本地序列n
+        paid+=(loadAllItems()[n]).price*arr[1];                    //小计
+        if((_.first(inputs,i)).indexOf(inputs[i])!=-1){continue}   //排除之后相同产品对计数影响
+        var count=num(i,arr,inputs);                               //商品计数
         var sjcount=count;
         if(count>=3 && loadPromotions.call()[0].barcodes.indexOf(arr[0])!=-1 ){
-            c=parseInt(count/3);zongji-=c*loadAllItems()[h].price;sjcount=count-c;
-            free+='名称：'+loadAllItems()[h].name+'，数量：'+c+loadAllItems()[h].unit+'\n';
-            jiesheng+=c*loadAllItems()[h].price}
-        shuchu+='名称：'+loadAllItems()[h].name+'，数量：'+count+loadAllItems()[h].unit+
-            '，单价：'+loadAllItems()[h].price.toFixed(2)+'(元)，小计：'+(loadAllItems()[h].price*sjcount).toFixed(2)+'(元)\n';
+            c=parseInt(count/3);paid-=c*loadAllItems()[n].price;sjcount=count-c;
+            free+='名称：'+loadAllItems()[n].name+'，数量：'+c+loadAllItems()[n].unit+'\n';
+            save+=c*loadAllItems()[n].price
+        }                                                           //免费购物单
+        print+=funprint(count,sjcount,n);                           //购物清单
     }
-    var date = function (num) {
-        return num < 10 ? '0' + num : num;
-    };
-    console.log('***<没钱赚商店>购物清单***\n'+
-        '打印时间：'+moment().format('YYYY[年]MM[月]DD[日] HH:mm:ss')+'\n'+
-        '----------------------\n' +
-        shuchu+
-        '----------------------\n'+
-        '挥泪赠送商品：\n'+
-        free+
-        '----------------------\n'+
-        '总计：'+zongji.toFixed(2)+'(元)\n'+
-        '节省：'+jiesheng.toFixed(2)+'(元)\n'+
-        '**********************')
+        out(print,paid,free,save);                                  //输出购物单
 }
