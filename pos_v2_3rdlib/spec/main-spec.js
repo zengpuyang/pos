@@ -24,7 +24,6 @@ describe('pos', function () {
         spyOn(console, 'log');
 
         printInventory(inputs);
-
         var currentDate = new Date(),
             year = dateDigitToString(currentDate.getFullYear()),
             month = dateDigitToString(currentDate.getMonth() + 1),
