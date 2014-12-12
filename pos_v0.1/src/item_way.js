@@ -14,5 +14,7 @@ function item_receipt(new_inputs){
             '，单价：'+item.price.toFixed(2)+'(元)，小计：'+item.min_pay.toFixed(2)+'(元)\n';
         total_money+=item.min_pay
     });
-    return [receipt,total_money.toFixed(2)]
+    return{
+    receipt:receipt,
+    total_money:total_money.toFixed(2)}
 }
