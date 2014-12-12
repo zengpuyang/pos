@@ -30,10 +30,7 @@ describe('pos', function () {
     it('should print correct text', function () {
 
         spyOn(console, 'log');
-<<<<<<< HEAD
-=======
 
->>>>>>> cb6f22a4d0f90a967ff78e84927c43156520dd5a
         printInventory(inputs);
 
         var expectText =
