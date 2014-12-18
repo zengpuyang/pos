@@ -22,7 +22,7 @@ function item_special_count(special_item_code_array){
 function item_receipt_lists(inputs_with_method){
     var total= 0,save= 0,receipt_all='',receipt_free='';
     _.each(inputs_with_method,function(item){
-        if(item.count>2){
+        if(item.count>2 && loadPromotions()[0].barcodes.indexOf(item.barcode)!=-1){
             var save_count=parseInt(item.count/3);
             receipt_free+='名称：'+item.name+'，数量：'+save_count+item.unit+'\n';
             item.subtotal-=save_count*item.price;
