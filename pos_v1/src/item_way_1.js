@@ -14,12 +14,10 @@ function item_methods(inputs){
             return code_array[0]
         }).value()
 }
-function item_special_count(code_array){
-    var number=0;
-    _.each(code_array, function(code){
-        number+=parseInt(code.substr(11))
-    });
-    return number
+function item_special_count(special_item_code_array){
+    return _.reduce(special_item_code_array,function(code1,code2){
+        return code1+parseInt(code2.substr(11))
+    },0)
 }
 function item_receipt_lists(inputs_with_method){
     var total= 0,save= 0,receipt_all='',receipt_free='';
