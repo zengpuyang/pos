@@ -19,26 +19,29 @@ function item_handled(inputs){
         })
         .each(function(code){
             var code_method=_.filter(loadAllItems(),function(item){return item.barcode==code.barcode});
+            var save_count=parseInt(code.count/3);
             code.name=code_method[0].name;
             code.unit=code_method[0].unit;
             code.price=code_method[0].price;
-            code.subtotal=code_method[0].price*code.count
+            code.save_count=save_count;
+            code.subtotal=code_method[0].price*(code.count-save_count)
         })
         .value()
 }
 function item_receipt_lists(inputs_with_method){
     var total= 0,save= 0,receipt_all='',receipt_free='';
-    _.each(inputs_with_method,function(item){
-        if(item.count>2 && loadPromotions()[0].barcodes.indexOf(item.barcode)!=-1){
-            var save_count=parseInt(item.count/3);
-            receipt_free+='名称：'+item.name+'，数量：'+save_count+item.unit+'\n';
-            item.subtotal-=save_count*item.price;
-            save+=save_count*item.price
-        }
-        receipt_all += '名称：'+item.name+'，数量：'+item.count+item.unit+
-            '，单价：'+item.price.toFixed(2)+'(元)，小计：'+item.subtotal.toFixed(2)+'(元)\n';
-        total += item.subtotal
-    });
+    _.chain(inputs_with_method)
+        .each(function(item){
+            receipt_all += '名称：'+item.name+'，数量：'+item.count+item.unit+
+                '，单价：'+item.price.toFixed(2)+'(元)，小计：'+item.subtotal.toFixed(2)+'(元)\n';
+            total += item.subtotal
+        })
+        .filter(function(item){
+            return item.count>2 && loadPromotions()[0].barcodes.indexOf(item.barcode)!=-1
+        }).map(function(item){
+            receipt_free+='名称：'+item.name+'，数量：'+item.save_count+item.unit+'\n';
+            save+=item.save_count*item.price
+        }).value();
     return {
         receipt_all: receipt_all,
         receipt_free:receipt_free,
