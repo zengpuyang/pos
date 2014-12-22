@@ -1,4 +1,4 @@
-//TODO: Please write code in this file.
 function printInventory(inputs) {
-    PrintList.put_seal_shopping(inputs);
+    var out=print_list(inputs);
+    console.log(out.shopping_list)
 }
