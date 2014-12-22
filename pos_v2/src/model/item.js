@@ -17,14 +17,13 @@ function item_handled(inputs){
                 },0)
             }
         })
-        .each(function(code){
+        .map(function(code){
             var code_method=_.filter(loadAllItems(),function(item){return item.barcode==code.barcode});
             var save_count=parseInt(code.count/3);
-            code.name=code_method[0].name;
-            code.unit=code_method[0].unit;
-            code.price=code_method[0].price;
-            code.save_count=save_count;
-            code.subtotal=code_method[0].price*(code.count-save_count)
+            code_method[0].save_count=save_count;
+            code_method[0].subtotal=code_method[0].price*(code.count-save_count);
+            code_method[0].count=code.count;
+            return code_method[0];
         })
         .value()
 }

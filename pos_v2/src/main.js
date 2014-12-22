@@ -1,7 +1,7 @@
 function printInventory(inputs) {
+    var time=moment().format('YYYY[年]MM[月]DD[日] HH:mm:ss');
     var inputs_with_method=item_handled(inputs);
     var receipt_list=item_receipt_lists(inputs_with_method);
-    var time=moment().format('YYYY[年]MM[月]DD[日] HH:mm:ss');
     var result='***<没钱赚商店>购物清单***\n'+
         '打印时间：'+time+'\n'+
         '----------------------\n' +
